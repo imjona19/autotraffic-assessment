@@ -1,0 +1,60 @@
+import { Trash2, Pencil } from "lucide-react";
+import type { Task } from "../../types/task";
+import { formatRelativeDate } from "../../utils/formatDate";
+
+interface TaskItemProps {
+  task: Task;
+  onToggle: (id: number, completed: boolean) => void;
+  onDelete: (id: number) => void;
+  onEdit: (task: Task) => void;
+}
+
+export default function TaskItem({ task, onToggle, onDelete, onEdit }: TaskItemProps) {
+  return (
+    <div className="flex items-stretch bg-white rounded-lg border border-gray-100 shadow-sm overflow-hidden">
+      <div className={`w-1 flex-shrink-0 ${task.completed ? "bg-green-500" : "bg-gray-200"}`} />
+
+      <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between flex-1 px-4 py-3 gap-2">
+        <div className="flex items-center gap-3 min-w-0">
+          <input
+            type="checkbox"
+            checked={task.completed}
+            onChange={() => onToggle(task.id, !task.completed)}
+            className="w-4 h-4 accent-[#254bdc] cursor-pointer flex-shrink-0"
+          />
+          <div className="min-w-0">
+            <p
+              className={`text-sm font-medium truncate ${
+                task.completed ? "line-through text-gray-400" : "text-[#1C2230]"
+              }`}
+            >
+              {task.title}
+            </p>
+            {task.description && (
+              <p className="text-xs text-gray-400 truncate">{task.description}</p>
+            )}
+          </div>
+        </div>
+
+        <div className="flex items-center justify-between sm:justify-end gap-3 sm:gap-4 pl-7 sm:pl-0 flex-shrink-0">
+          <div className="flex items-center gap-3">
+            <span className={task.completed ? "badge-completed" : "badge-pending"}>
+              {task.completed ? "Completada" : "Pendiente"}
+            </span>
+            <span className="text-xs text-gray-400 hidden md:inline">
+              {formatRelativeDate(task.created_at)}
+            </span>
+          </div>
+          <div className="flex items-center gap-3">
+            <button onClick={() => onEdit(task)} className="text-gray-300 hover:text-[#254bdc] transition-colors" title="Editar tarea">
+              <Pencil size={16} />
+            </button>
+            <button onClick={() => onDelete(task.id)} className="text-gray-300 hover:text-red-500 transition-colors" title="Eliminar tarea">
+              <Trash2 size={16} />
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+}

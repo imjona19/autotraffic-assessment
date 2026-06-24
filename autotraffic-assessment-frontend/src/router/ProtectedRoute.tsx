@@ -1,11 +1,17 @@
 import { Navigate } from "react-router-dom";
 import type { ReactNode } from "react";
+import { useAuth } from "../context/AuthContext";
 
-interface ProtectedRouteProps {
-    children: ReactNode;
-}
+export default function ProtectedRoute({ children }: { children: ReactNode }) {
+  const { user, isLoading } = useAuth();
 
-export default function ProtectedRoute({ children }: ProtectedRouteProps) {
-    const isAuthenticated = Boolean(localStorage.getItem("token"));
-    return isAuthenticated ? children : <Navigate to="/login" replace />;
+  if (isLoading) {
+    return (
+      <div className="min-h-screen flex items-center justify-center bg-[#F7F8FA]">
+        <p className="text-gray-500 text-sm">Cargando...</p>
+      </div>
+    );
+  }
+
+  return user ? children : <Navigate to="/login" replace />;
 }

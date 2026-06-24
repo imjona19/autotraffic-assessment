@@ -1,9 +1,21 @@
 export interface User {
-    email: string;
-    name: string;
+  id: number;
+  name: string;
+  email: string;
 }
 
 export interface LoginCredentials {
-    email: string;
-    password: string;
+  email: string;
+  password: string;
+}
+
+export interface RegisterPayload {
+  name: string;
+  email: string;
+  password: string;
+}
+
+export interface AuthResponse {
+  user: User;
+  token: string;
 }
