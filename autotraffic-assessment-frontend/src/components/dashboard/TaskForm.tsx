@@ -3,7 +3,7 @@ import type { FormEvent } from "react";
 import { X } from "lucide-react";
 import Input from "../ui/Input";
 import { useTags } from "../../hooks/useTags";
-import type { Task, CreateTaskPayload, UpdateTaskPayload } from "../../types/task";
+import type { Task } from "../../types/task";
 
 interface TaskFormProps {
   isOpen: boolean;

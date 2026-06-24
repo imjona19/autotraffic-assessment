@@ -1,4 +1,4 @@
-import { CheckSquare, LayoutDashboard, ListTodo, LogOut, X } from "lucide-react";
+import { CheckSquare, LayoutDashboard, LogOut, X } from "lucide-react";
 import { useAuth } from "../../context/AuthContext";
 
 interface SidebarProps {
