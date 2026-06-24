@@ -3,29 +3,17 @@ import toast from "react-hot-toast";
 import { tasksApi } from "../api/tasksApi";
 import type { Task, CreateTaskPayload, UpdateTaskPayload } from "../types/task";
 
-// interface UseTasksReturn {
-//   tasks: Task[];
-//   isLoading: boolean;
-//   error: string | null;
-//   createTask: (payload: CreateTaskPayload) => Promise<boolean>;
-//   updateTask: (id: number, payload: UpdateTaskPayload) => Promise<boolean>;
-//   deleteTask: (id: number) => Promise<boolean>;
-//   toggleComplete: (id: number, completed: boolean) => Promise<boolean>;
-//   refetch: () => Promise<void>;
-// }
-
 export function useTasks() {
     const [tasks, setTasks] = useState<Task[]>([]);
     const [isLoading, setIsLoading] = useState(true);
     const [error, setError] = useState<string | null>(null);
-    const [sortOrder, setSortOrder] = useState<"asc" | "desc">("desc");
 
-    const fetchTasks = useCallback(async (order: "asc" | "desc" = sortOrder) => {
+    const fetchTasks = useCallback(async () => {
         setIsLoading(true);
         setError(null);
-
+        
         try {
-            const data = await tasksApi.getAll(order);
+            const data = await tasksApi.getAll();
             setTasks(data);
         } 
         catch {
@@ -34,20 +22,17 @@ export function useTasks() {
         finally {
             setIsLoading(false);
         }
-    }, [sortOrder]);
+        
+    }, []);
 
     useEffect(() => {
-        fetchTasks(sortOrder);
-    }, [sortOrder]);
-
-    const changeSortOrder = (order: "asc" | "desc") => {
-        setSortOrder(order);
-    };
+        fetchTasks();
+    }, [fetchTasks]);
 
     const createTask = async (payload: CreateTaskPayload): Promise<boolean> => {
         try {
             const newTask = await tasksApi.create(payload);
-            setTasks((prev) => [newTask, ...prev]);
+            setTasks((prev) => [...prev, newTask]);
             toast.success("Tarea creada");
             return true;
         } 
@@ -60,14 +45,16 @@ export function useTasks() {
     const updateTask = async (id: number, payload: UpdateTaskPayload): Promise<boolean> => {
         try {
             const updated = await tasksApi.update(id, payload);
+
             setTasks((prev) => prev.map((task) => (task.id === id ? updated : task)));
-            // Solo mostramos toast si fue una edición real de contenido, no un toggle de checkbox
-            if (payload.title !== undefined || payload.description !== undefined) {
+
+            if (payload.title !== undefined || payload.description !== undefined || payload.tagIds !== undefined) {
                 toast.success("Tarea actualizada");
             }
             return true;
         } 
-        catch {
+        catch 
+        {
             toast.error("No se pudo actualizar la tarea");
             return false;
         }
@@ -90,16 +77,28 @@ export function useTasks() {
         return updateTask(id, { completed });
     };
 
+    const reorderTasks = async (newOrder: Task[]) => {
+
+        setTasks(newOrder);
+
+        try {
+            await tasksApi.reorder(newOrder.map((t) => t.id));
+        } 
+        catch {
+            toast.error("No se pudo guardar el nuevo orden");
+            fetchTasks(); 
+        }
+    };
+
     return {
         tasks,
         isLoading,
         error,
-        sortOrder,
-        changeSortOrder,
         createTask,
         updateTask,
         deleteTask,
         toggleComplete,
+        reorderTasks,
         refetch: fetchTasks,
     };
 }

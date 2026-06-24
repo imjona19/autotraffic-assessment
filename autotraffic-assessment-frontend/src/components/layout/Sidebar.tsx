@@ -29,7 +29,7 @@ export default function Sidebar({ isOpen, onClose }: SidebarProps) {
             <div className="flex items-center gap-2">
               <CheckSquare className="text-[#254bdc]" size={22} />
               <span className="font-heading font-bold text-lg text-[#1C2230]">
-                Task<span className="text-[#254bdc]">Flow</span>
+                Task<span className="text-[#254bdc]">Assessment</span>
               </span>
             </div>
             <button onClick={onClose} className="text-gray-400 hover:text-gray-600 lg:hidden">
@@ -42,10 +42,10 @@ export default function Sidebar({ isOpen, onClose }: SidebarProps) {
               <LayoutDashboard size={18} />
               Dashboard
             </a>
-            <a href="#" className="nav-item">
+            {/* <a href="#" className="nav-item">
               <ListTodo size={18} />
               Tareas
-            </a>
+            </a> */}
           </nav>
         </div>
 

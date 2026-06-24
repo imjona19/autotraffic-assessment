@@ -18,7 +18,7 @@ export default function Header({ onNewTask, onMenuClick }: HeaderProps) {
         </button>
         <div className="min-w-0">
           <h1 className="font-heading text-xl sm:text-2xl font-bold text-[#1C2230] truncate">
-            ¡Hola, {firstName}! 👋
+            ¡Hola, {firstName}!
           </h1>
           <p className="text-sm text-gray-500 mt-1">Vamos a darle orden a tu día.</p>
         </div>

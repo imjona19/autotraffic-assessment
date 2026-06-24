@@ -10,7 +10,7 @@ import ConfirmModal from "../components/ui/ConfirmarModal";
 import type { Task } from "../types/task";
 
 export default function DashboardPage() {
-  const { tasks, isLoading, error, sortOrder, changeSortOrder, createTask, updateTask, deleteTask, toggleComplete } = useTasks();
+  const { tasks, isLoading, error, createTask, updateTask, deleteTask, toggleComplete, reorderTasks } = useTasks();
   const [isFormOpen, setIsFormOpen] = useState(false);
   const [taskToEdit, setTaskToEdit] = useState<Task | null>(null);
   const [taskToDelete, setTaskToDelete] = useState<Task | null>(null);
@@ -63,11 +63,10 @@ export default function DashboardPage() {
             <h2 className="font-heading font-semibold text-base text-[#1C2230] mb-4">Tus tareas</h2>
             <TaskList
               tasks={tasks}
-              sortOrder={sortOrder}
-              onSortChange={changeSortOrder}
               onToggle={toggleComplete}
               onDelete={(id) => setTaskToDelete(tasks.find((t) => t.id === id) ?? null)}
               onEdit={handleEditTask}
+              onReorder={reorderTasks}
             />
           </div>
 

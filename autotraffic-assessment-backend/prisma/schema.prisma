@@ -15,7 +15,7 @@ datasource db {
 
 model User {
   id          Int      @id @default(autoincrement())
-  name        String   
+  name        String
   email       String   @unique
   password    String
   created_at  DateTime @default(now())
@@ -23,21 +23,38 @@ model User {
   active      Boolean  @default(true)
 
   tasks       Task[]
+  tags        Tag[]
 
   @@map("users")
 }
 
 model Task {
   id          Int      @id @default(autoincrement())
-  title       String   
-  description String?  
+  title       String
+  description String?
   completed   Boolean  @default(false)
+  order       Int      @default(0)
   created_at  DateTime @default(now())
   updated_at  DateTime @updatedAt
   active      Boolean  @default(true)
 
-  userId      Int      // Este campo almacenará el ID del usuario
+  userId      Int
   user        User     @relation(fields: [userId], references: [id])
+  tags        Tag[]    @relation("TaskTags")
 
   @@map("tasks")
+}
+
+model Tag {
+  id          Int      @id @default(autoincrement())
+  name        String
+  color       String   @default("#254bdc")
+
+  userId      Int
+  user        User     @relation(fields: [userId], references: [id])
+
+  tasks       Task[]   @relation("TaskTags")
+
+  @@unique([userId, name])
+  @@map("tags")
 }

@@ -20,4 +20,9 @@ export const tasksApi = {
   delete: async (id: number): Promise<void> => {
     await apiClient.delete(`/tasks/${id}`);
   },
+
+  reorder: async (orderedIds: number[]): Promise<void> => {
+    await apiClient.put("/tasks/reorder", { orderedIds });
+  },
+
 };

@@ -10,9 +10,8 @@ export class TaskController {
     async getAll(req: AuthenticatedRequest, res: Response): Promise<void> {
         try {
             const userId = req.userId!;
-            const sortOrder = req.query.sort === 'asc' ? 'asc' : 'desc';
 
-            const tasks = await taskService.getTasksByUser(userId, sortOrder);
+            const tasks = await taskService.getTasksByUser(userId);
 
             res.status(200).json(tasks);
         }
@@ -45,7 +44,7 @@ export class TaskController {
     async update(req: AuthenticatedRequest, res: Response): Promise<void> {
         try {
             const { id } = req.params;
-            const { title, description, completed } = req.body;
+            const { title, description, completed, tagIds } = req.body;
             const userId = req.userId!;
 
             if (title === undefined && description === undefined && completed === undefined) {
@@ -60,7 +59,8 @@ export class TaskController {
             const updatedTask = await taskService.updateTask(Number(id), Number(userId), {
                 title,
                 description,
-                completed
+                completed,
+                tagIds
             });
         
             res.status(200).json(updatedTask);
@@ -82,6 +82,22 @@ export class TaskController {
         } 
         catch (error) {
             res.status(500).json({ message: 'Error al eliminar la tarea', error });
+        }
+    }
+
+    async reorder(req: AuthenticatedRequest, res: Response): Promise<void> {
+        try {
+            const { orderedIds } = req.body;
+            if (!Array.isArray(orderedIds)) {
+                res.status(400).json({ message: 'orderedIds debe ser un arreglo' });
+                return;
+            }
+
+            await taskService.reorderTasks(req.userId!, orderedIds);
+            res.status(200).json({ message: 'Orden actualizado' });
+        } 
+        catch (error: any) {
+            res.status(400).json({ message: error.message });
         }
     }
 }
