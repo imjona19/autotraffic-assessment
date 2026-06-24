@@ -2,10 +2,10 @@ import { prisma } from '../config/prisma.js';
 
 export class TaskService {
   // Obtener todas las tareas de un usuario
-  async getTasksByUser(userId: number) {
+  async getTasksByUser(userId: number, sortOrder: 'asc' | 'desc' = 'desc') {
     return await prisma.task.findMany({
       where: { userId, active: true },
-      orderBy: { created_at: 'desc' }
+      orderBy: { created_at: sortOrder }
     });
   }
 

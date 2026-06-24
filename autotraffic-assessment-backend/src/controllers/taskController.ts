@@ -9,12 +9,13 @@ export class TaskController {
     // GET /api/tasks
     async getAll(req: AuthenticatedRequest, res: Response): Promise<void> {
         try {
-            const userId = req.userId!; 
-            
-            const tasks = await taskService.getTasksByUser(userId);
-        
+            const userId = req.userId!;
+            const sortOrder = req.query.sort === 'asc' ? 'asc' : 'desc';
+
+            const tasks = await taskService.getTasksByUser(userId, sortOrder);
+
             res.status(200).json(tasks);
-        } 
+        }
         catch (error) {
             res.status(500).json({ message: 'Error al obtener las tareas', error });
         }

@@ -1,7 +1,7 @@
-import LoginForm from "../components/auth/LoginForm";
 import { Link } from "react-router-dom";
+import RegisterForm from "../components/auth/RegisterForm";
 
-export default function LoginPage() {
+export default function RegisterPage() {
   return (
     <div className="min-h-screen flex items-center justify-center bg-[#F7F8FA] px-4">
       <div className="card w-full max-w-sm">
@@ -9,15 +9,13 @@ export default function LoginPage() {
           <h1 className="text-2xl font-bold text-gray-800">
             Task<span className="text-[#254bdc]">Flow</span>
           </h1>
-          <p className="text-sm text-gray-500 mt-1">
-            Inicia sesión para continuar
-          </p>
+          <p className="text-sm text-gray-500 mt-1">Crea tu cuenta para empezar</p>
         </div>
-        <LoginForm />
+        <RegisterForm />
         <p className="text-sm text-gray-500 text-center mt-4">
-          ¿No tienes cuenta?{" "}
-          <Link to="/register" className="text-[#254bdc] font-medium hover:underline">
-            Regístrate
+          ¿Ya tienes cuenta?{" "}
+          <Link to="/login" className="text-[#254bdc] font-medium hover:underline">
+            Inicia sesión
           </Link>
         </p>
       </div>

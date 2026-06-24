@@ -2,8 +2,8 @@ import { apiClient } from "./apiClient";
 import type { Task, CreateTaskPayload, UpdateTaskPayload } from "../types/task";
 
 export const tasksApi = {
-  getAll: async (): Promise<Task[]> => {
-    const { data } = await apiClient.get<Task[]>("/tasks");
+  getAll: async (sortOrder: "asc" | "desc" = "desc"): Promise<Task[]> => {
+    const { data } = await apiClient.get<Task[]>("/tasks", { params: { sort: sortOrder } });
     return data;
   },
 
