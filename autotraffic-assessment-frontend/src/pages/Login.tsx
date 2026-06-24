@@ -7,7 +7,7 @@ export default function LoginPage() {
       <div className="card w-full max-w-sm">
         <div className="text-center mb-6">
           <h1 className="text-2xl font-bold text-gray-800">
-            Task<span className="text-[#254bdc]">Flow</span>
+            Task<span className="text-[#254bdc]">Assessment</span>
           </h1>
           <p className="text-sm text-gray-500 mt-1">
             Inicia sesión para continuar
